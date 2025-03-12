@@ -37,6 +37,12 @@ class Product
     #[ORM\OneToMany(targetEntity: BasketProduct::class, mappedBy: 'productId', orphanRemoval: true)]
     private Collection $basketProducts;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $stock = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->basketProducts = new ArrayCollection();
@@ -133,6 +139,30 @@ class Product
                 $basketProduct->setProductId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): static
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
