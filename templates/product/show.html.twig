@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-0 description-page">
+  <div class="row g-0 align-items-stretch">
+    <!-- Image (colonne gauche) -->
+    <div class="col-md-6 p-0">
+      <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.image }}"
+        class="img-fluid description-product-img">
+    </div>
+
+    <!-- Texte et bouton (colonne droite) -->
+    <div class="col-md-6 d-flex p-4 h-100">
+      <div class="product-content w-100 d-flex flex-column justify-content-between">
+        <div>
+          <h3>{{ product.name }}</h3>
+          <h3>{{ product.price }} €</h3>
+          <div class="description-block">
+            <p class="description-title">Description</p>
+            <span>{{ product.longDescription }}</span>
+          </div>
+        </div>
+
+        <!-- Bouton centré en bas -->
+        <div class="basket-link text-center mt-auto">
+          <a href="{{ path('app_product_show', {id: product.id}) }}" class="basket-link">
+            Ajouter au panier
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

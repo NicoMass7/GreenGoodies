@@ -1,15 +1,163 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
 
+/******************/
+/* CSS HOME PAGE */
+/*****************/
+
 .brand-text {
   font-family: 'Playfair Display', serif;
   font-size: 20px;
 }
 
+.bg-light-green {
+  background-color: #f1faf3;
+  display: flex;
+  align-items: center;
+  /* Centre le texte verticalement */
+}
+
+.bg-light-rose {
+  background-color: #e7d8cf;
+  display: flex;
+  align-items: center;
+  /* Centre le texte verticalement */
+}
+
+.bg-light-green .content {
+  width: 100%;
+}
+
+/* Assure que la hauteur du texte s'ajuste à celle de l'image */
+.row {
+  display: flex;
+  align-items: stretch;
+  /* Étire toutes les colonnes pour qu'elles aient la même hauteur */
+}
+
+/* Permet à l'image de définir la hauteur totale */
+.footer-img {
+  height: 800px;
+  width: 100%;
+  /* Ajuste la hauteur naturellement */
+}
 
 body {
   background-color: white;
 }
 
+.product-title {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-left: 3rem;
+}
+
+.home-content {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  max-width: 50%;
+}
+
+.product-img {
+  height: 400px;
+  /* Ajustez si nécessaire */
+  width: 100%;
+  /* Prend toute la largeur du conteneur */
+  object-fit: cover;
+  /* Recadre l’image pour remplir la zone sans être déformée */
+  display: block;
+}
+
+/* Fond léger pour démarquer la section */
+.product-info {
+  padding: 15px;
+  text-align: center;
+}
+
+.product-link {
+  display: inline-block;
+  text-decoration: none;
+  /* Supprime le soulignement */
+  color: black;
+  /* Texte noir */
+  /* Fond blanc par défaut */
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  /* Optionnel : pour éviter que le contenu ne bouge */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Fond noir et texte blanc au survol */
+.product-link:hover {
+  background-color: black;
+  color: white;
+}
+
+/*********************/
+/* CSS PRODUCT PAGE */
+/********************/
+
+.basket-link {
+  margin-top: auto;
+  display: inline-block;
+  /* Supprime le soulignement */
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  background-color: rgb(91, 89, 89);
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  /* Optionnel : pour éviter que le contenu ne bouge */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Fond noir et texte blanc au survol */
+.basket-link:hover {
+  background-color: black;
+  color: white;
+}
+
+.description-product-img {
+  height: 100%;
+  /* L'image prend toute la hauteur du bloc */
+  object-fit: cover;
+}
+
+.description-title {
+  font-size: smaller;
+  color: rgb(177, 172, 172);
+}
+
+.description-block {
+  padding-top: 3rem;
+}
+
+.description-page {
+  min-height: 100%;
+  /* Assure que le conteneur prend toute la hauteur */
+  height: 100%;
+  padding-bottom: 10rem;
+}
+
+.description-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.product-content {
+  padding-top: 5rem;
+  padding-left: 5rem;
+  max-width: 70%;
+  min-height: 600px;
+  /* Même hauteur que l'image */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/**************/
+/* CSS FOOTER */
+/**************/
 
 .footer {
   padding-top: 3rem;

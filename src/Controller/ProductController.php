@@ -2,30 +2,41 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/product', name: 'app_product')]
+#[Route('/product', name: 'app_product_')]
 final class ProductController extends AbstractController
 {
-  #[Route('/', name: 'app_product')]
+  public function __construct(
+    private ProductRepository $productRepository,
+    private EntityManagerInterface $entityManager,
+  ) {}
+
+  #[Route('/', name: 'index')]
   public function index(): Response
   {
+    $products = $this->productRepository->findALL();
+
     return $this->render('product/index.html.twig', [
-      'controller_name' => 'ProductController',
+      'products' => $products,
     ]);
   }
 
-  #[Route('/show/{id}', name: 'app_product_show')]
-  public function showProduct(): Response
+  #[Route('/show/{id}', name: 'show')]
+  public function showProduct($id): Response
   {
+    $product = $this->productRepository->find($id);
+
     return $this->render('product/show.html.twig', [
-      'controller_name' => 'ProductController',
+      'product' => $product,
     ]);
   }
 
-  #[Route('/add', name: 'app_product_add')]
+  #[Route('/add', name: 'add')]
   public function addProduct(): Response
   {
     return $this->render('product/add.html.twig', [
