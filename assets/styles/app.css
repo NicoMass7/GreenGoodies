@@ -156,6 +156,234 @@ body {
 }
 
 /**************/
+/* CSS BASKET */
+/**************/
+
+/* Conteneur principal */
+.cart-page {
+  background-color: #f8f3ee;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+
+/* Titre */
+.cart-title {
+  text-align: center;
+  padding-top: 3rem;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Lien "Vider le panier" bien positionné */
+.clear-cart {
+  align-self: flex-start;
+  margin-left: 25%;
+  color: #bcbaba;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.clear-cart:hover {
+  color: #7e7c7c;
+  text-decoration: underline;
+}
+
+/* Conteneur du panier */
+.cart-container {
+  background: #fff;
+  width: 50%;
+  min-width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  /* Espacement avant le total */
+}
+
+/* Produits */
+.cart-items {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+/* Image du produit */
+.cart-image {
+  width: 120px;
+  height: auto;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+/* Détails produit */
+.cart-details {
+  flex-grow: 1;
+}
+
+.cart-details h2 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Quantité et prix */
+.quantity {
+  font-size: 14px;
+  color: #666;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Conteneur du total */
+.cart-summary-container {
+  background: #fff;
+  width: 50%;
+  min-width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: right;
+  margin-bottom: 20px;
+  /* Espacement avant le bouton */
+}
+
+.cart-summary p {
+  font-size: 16px;
+}
+
+.delivery-info {
+  color: #777;
+  font-size: 14px;
+}
+
+/* Bouton de validation bien séparé */
+.checkout-button {
+  text-decoration: none;
+  width: 40%;
+  padding: 2rem;
+  background-color: #444;
+  color: white;
+  text-align: center;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.checkout-button:hover {
+  background-color: #222;
+}
+
+/**************/
+/* CSS ORDER */
+/**************/
+
+.order-container {
+  background: #fff;
+  width: 50%;
+  min-width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.order-title,
+.order-table th,
+.order-table td {
+  padding: 15px;
+  text-align: left;
+}
+
+.order-table th:nth-child(2),
+.order-table td:nth-child(2) {
+  text-align: center;
+  /* Centre la date */
+}
+
+.order-table th:nth-child(3),
+.order-table td:nth-child(3) {
+  text-align: right;
+  /* Aligne le prix à droite */
+}
+
+.order-table th {
+  font-weight: bold;
+}
+
+.order-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.order-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Conteneur du total */
+.order-summary-container {
+  background: #fff;
+  width: 50%;
+  min-width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 20px;
+  /* Espacement avant le bouton */
+}
+
+.order-summary p {
+  font-size: 16px;
+}
+
+/* Bouton de validation bien séparé */
+.order-button {
+  width: 96%;
+  text-decoration: none;
+  padding: 2rem;
+  background-color: #444;
+  color: white;
+  text-align: center;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.order-button:hover {
+  background-color: #222;
+}
+
+/**************/
 /* CSS FOOTER */
 /**************/
 

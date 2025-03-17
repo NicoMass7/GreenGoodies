@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+<div class="cart-page">
+  <h1 class="cart-title">Mon compte</h1>
+
+  <div class="order-container">
+    {% if ordersList is empty %}
+    <p class="order-cart">Votre panier est vide.</p>
+    {% else %}
+    <p class="order-title"><strong>Mes commandes</strong></p>
+    <table class="order-table">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Date</th>
+          <th>Prix</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in ordersList %}
+        <tr>
+          <td>{{ order.orderNumber }}</td>
+          <td>{{ order.validationDate|date("d/m/Y") }}</td>
+          <td>{{ order.totalPrice|number_format(2, ',', ' ') }}€</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+  </div>
+
+  <!-- Bloc séparé pour le résumé -->
+  <div class="order-summary-container">
+    <div class="order-summary">
+      <p class="order-title"><strong>Mon accès API : </strong></p>
+      <a href="#" class="order-button">Activer mon accès API</a>
+    </div>
+  </div>
+
+  <div class="order-summary-container">
+    <div class="order-summary">
+      <a href="#" class="order-button">Supprimer mon compte</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

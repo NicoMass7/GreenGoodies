@@ -8,60 +8,60 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: BasketProductRepository::class)]
 class BasketProduct
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+  #[ORM\Id]
+  #[ORM\GeneratedValue]
+  #[ORM\Column]
+  private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'basketProducts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Basket $basketId = null;
+  #[ORM\ManyToOne(inversedBy: 'basketProducts')]
+  #[ORM\JoinColumn(nullable: false)]
+  private ?Basket $basket = null;
 
-    #[ORM\ManyToOne(inversedBy: 'basketProducts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Product $productId = null;
+  #[ORM\ManyToOne(inversedBy: 'basketProducts')]
+  #[ORM\JoinColumn(nullable: false)]
+  private ?Product $product = null;
 
-    #[ORM\Column]
-    private ?int $quantity = null;
+  #[ORM\Column]
+  private ?int $quantity = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+  public function getId(): ?int
+  {
+    return $this->id;
+  }
 
-    public function getBasketId(): ?Basket
-    {
-        return $this->basketId;
-    }
+  public function getBasket(): ?Basket
+  {
+    return $this->basket;
+  }
 
-    public function setBasketId(?Basket $basketId): static
-    {
-        $this->basketId = $basketId;
+  public function setBasket(?Basket $basket): static
+  {
+    $this->basket = $basket;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    public function getProductId(): ?Product
-    {
-        return $this->productId;
-    }
+  public function getProduct(): ?Product
+  {
+    return $this->product;
+  }
 
-    public function setProductId(?Product $productId): static
-    {
-        $this->productId = $productId;
+  public function setProduct(?Product $product): static
+  {
+    $this->product = $product;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
+  public function getQuantity(): ?int
+  {
+    return $this->quantity;
+  }
 
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
+  public function setQuantity(int $quantity): static
+  {
+    $this->quantity = $quantity;
 
-        return $this;
-    }
+    return $this;
+  }
 }

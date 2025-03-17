@@ -16,7 +16,7 @@
       <div class="product-content w-100 d-flex flex-column justify-content-between">
         <div>
           <h3>{{ product.name }}</h3>
-          <h3>{{ product.price }} €</h3>
+          <h3>{{ product.price|number_format(2, ',', ' ') }} €</h3>
           <div class="description-block">
             <p class="description-title">Description</p>
             <span>{{ product.longDescription }}</span>
@@ -25,9 +25,8 @@
 
         <!-- Bouton centré en bas -->
         <div class="basket-link text-center mt-auto">
-          <a href="{{ path('app_product_show', {id: product.id}) }}" class="basket-link">
-            Ajouter au panier
-          </a>
+          <a href="{{ path('app_basket_product_add', {productId: product.id}) }}" class="basket-link">Ajouter au
+            panier</a>
         </div>
       </div>
     </div>

@@ -37,7 +37,7 @@
       <div class="product-info">
         <strong>{{ product.name }}</strong>
         <p>{{ product.shortDescription }}</p>
-        <p><strong>{{ product.price }} €</strong></p>
+        <p><strong>{{ product.price|number_format(2, ',', ' ') }} €</strong></p>
         <a href="{{ path('app_product_show', {id: product.id}) }}" class="product-link">Voir le produit</a>
       </div>
     </div>

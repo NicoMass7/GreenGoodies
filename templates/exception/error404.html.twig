@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Page non trouvée</h1>
+
+<p>
+  La page demandée n'a pas pu être localisée. Vérifiez qu'il n'y a pas de faute d'orthographe dans l'URL ou de <a
+    href="{{ path('app_product_index') }}">retour à la page d'accueil</a>.
+</p>
+{% endblock %}
