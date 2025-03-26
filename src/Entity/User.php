@@ -6,10 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements PasswordAuthenticatedUserInterface
+#[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
   #[ORM\Id]
   #[ORM\GeneratedValue]
@@ -25,16 +28,19 @@ class User implements PasswordAuthenticatedUserInterface
   #[ORM\Column(length: 255)]
   private ?string $mail = null;
 
+  #[ORM\Column(type: 'json')]
+  private array $roles = [];
+
   #[ORM\Column(length: 255)]
   private ?string $password = null;
 
-  #[ORM\OneToOne(mappedBy: 'userId', cascade: ['persist', 'remove'])]
+  #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
   private ?Basket $basket = null;
 
   /**
    * @var Collection<int, Order>
    */
-  #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'userId', orphanRemoval: true)]
+  #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user', orphanRemoval: true)]
   private Collection $orders;
 
   #[ORM\Column]
@@ -86,6 +92,26 @@ class User implements PasswordAuthenticatedUserInterface
     return $this;
   }
 
+  public function getUserIdentifier(): string
+  {
+    return $this->mail;
+  }
+
+  public function getRoles(): array
+  {
+    // Par défaut, tous les utilisateurs ont le rôle "ROLE_USER"
+    $roles = $this->roles;
+    $roles[] = 'ROLE_USER';
+
+    return array_unique($roles);
+  }
+
+  public function setRoles(array $roles): self
+  {
+    $this->roles = $roles;
+    return $this;
+  }
+
   public function getPassword(): ?string
   {
     return $this->password;
@@ -106,8 +132,8 @@ class User implements PasswordAuthenticatedUserInterface
   public function setBasket(Basket $basket): static
   {
     // set the owning side of the relation if necessary
-    if ($basket->getUserId() !== $this) {
-      $basket->setUserId($this);
+    if ($basket->getUser() !== $this) {
+      $basket->setUser($this);
     }
 
     $this->basket = $basket;
@@ -127,7 +153,7 @@ class User implements PasswordAuthenticatedUserInterface
   {
     if (!$this->orders->contains($order)) {
       $this->orders->add($order);
-      $order->setUserId($this);
+      $order->setUser($this);
     }
 
     return $this;
@@ -137,8 +163,8 @@ class User implements PasswordAuthenticatedUserInterface
   {
     if ($this->orders->removeElement($order)) {
       // set the owning side to null (unless already changed)
-      if ($order->getUserId() === $this) {
-        $order->setUserId(null);
+      if ($order->getUser() === $this) {
+        $order->setUser(null);
       }
     }
 
@@ -147,13 +173,15 @@ class User implements PasswordAuthenticatedUserInterface
 
   public function getCreationDate(): ?\DateTimeImmutable
   {
-      return $this->creationDate;
+    return $this->creationDate;
   }
 
   public function setCreationDate(\DateTimeImmutable $creationDate): static
   {
-      $this->creationDate = $creationDate;
+    $this->creationDate = $creationDate;
 
-      return $this;
+    return $this;
   }
+
+  public function eraseCredentials(): void {}
 }

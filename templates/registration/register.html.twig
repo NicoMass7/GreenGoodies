@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-0 registration-page">
+  <div class="row g-0 align-items-stretch">
+
+    <!-- Colonne gauche : Image -->
+    <div class="col-md-6 p-0 d-flex">
+      <img src="{{ asset('img/conviction.jpg') }}" alt="Inscription"
+        class="img-fluid flex-grow-1 registration-product-img">
+    </div>
+
+    <!-- Colonne droite : Formulaire d'inscription -->
+    <div class="col-md-6 d-flex justify-content-center p-4">
+      <div class="registration-form-container w-100">
+        <h1 class="registration-h1 mb-3">Inscription</h1>
+        <p class="registration-p text-muted">Tous les champs sont obligatoires.</p>
+
+        {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.lastName) }}
+        {{ form_row(registrationForm.firstName) }}
+        {{ form_row(registrationForm.mail) }}
+        {{ form_row(registrationForm.password) }}
+        <div class="form-check">
+          {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
+          <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
+            J'accepte les CGU de GreenGoodies</a>
+          </label>
+        </div>
+        <button type="submit" class="btn registration-btn btn-dark w-100 mt-3">S'inscrire</button>
+        {{ form_end(registrationForm) }}
+
+        <div class="text-center mt-3">
+          <a href="{{ path('app_login') }}" class="register-inscription">Déjà un compte ? Se connecter</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

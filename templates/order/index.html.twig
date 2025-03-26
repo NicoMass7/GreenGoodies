@@ -4,13 +4,13 @@
 
 {% block body %}
 <div class="cart-page">
-  <h1 class="cart-title">Mon compte</h1>
+  <h1 class="order-title">Mon compte</h1>
 
   <div class="order-container">
     {% if ordersList is empty %}
-    <p class="order-cart">Votre panier est vide.</p>
+    <p class="order-cart">Aucune commande passée.</p>
     {% else %}
-    <p class="order-title"><strong>Mes commandes</strong></p>
+    <p class="order-title-list"><strong>Mes commandes</strong></p>
     <table class="order-table">
       <thead>
         <tr>
@@ -33,17 +33,17 @@
 
   </div>
 
-  <!-- Bloc séparé pour le résumé -->
   <div class="order-summary-container">
     <div class="order-summary">
-      <p class="order-title"><strong>Mon accès API : </strong></p>
-      <a href="#" class="order-button">Activer mon accès API</a>
+      <p class="order-api-title"><strong>Mon accès API :</strong></p>
+      <a href="#" class="btn order-button btn-dark">Activer mon accès API</a>
     </div>
   </div>
 
   <div class="order-summary-container">
     <div class="order-summary">
-      <a href="#" class="order-button">Supprimer mon compte</a>
+      <a href="{{ path('app_user_delete')}}" class="btn order-button btn-dark">Supprimer mon
+        compte</a>
     </div>
   </div>
 </div>

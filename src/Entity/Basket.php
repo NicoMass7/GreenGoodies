@@ -15,14 +15,14 @@ class Basket
   #[ORM\Column]
   private ?int $id = null;
 
-  #[ORM\OneToOne(inversedBy: 'basket', cascade: ['persist', 'remove'])]
+  #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'basket', cascade: ['persist', 'remove'])]
   #[ORM\JoinColumn(nullable: false)]
   private ?User $user = null;
 
   /**
    * @var Collection<int, BasketProduct>
    */
-  #[ORM\OneToMany(targetEntity: BasketProduct::class, mappedBy: 'basketId', orphanRemoval: true)]
+  #[ORM\OneToMany(targetEntity: BasketProduct::class, mappedBy: 'basket', orphanRemoval: true)]
   private Collection $basketProducts;
 
   public function __construct()
@@ -40,10 +40,9 @@ class Basket
     return $this->user;
   }
 
-  public function setUser(User $user): static
+  public function setUser(?User $user): self
   {
     $this->user = $user;
-
     return $this;
   }
 

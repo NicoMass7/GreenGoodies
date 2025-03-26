@@ -38,7 +38,8 @@
         <strong>{{ product.name }}</strong>
         <p>{{ product.shortDescription }}</p>
         <p><strong>{{ product.price|number_format(2, ',', ' ') }} €</strong></p>
-        <a href="{{ path('app_product_show', {id: product.id}) }}" class="product-link">Voir le produit</a>
+        <a href="{{ path('app_product_show', {id: product.id}) }}" class=" btn product-link">Voir le
+          produit</a>
       </div>
     </div>
     {% endfor %}

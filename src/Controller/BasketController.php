@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\BasketProduct;
 use App\Repository\BasketRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,12 +20,12 @@ final class BasketController extends AbstractController
   ) {}
 
   #[Route('/', name: 'show')]
-  public function index(): Response
+  public function index(Security $security): Response
   {
-    $userId = 17;
+    /** @var User $employe */
+    $user = $security->getUser();
 
-    // Récupérer le panier de l'utilisateur
-    $basket = $this->basketRepository->findOneBy(['user' => $userId]);
+    $basket = $this->basketRepository->findOneBy(['user' => $user]);
 
     // Récupérer tous les objets BasketProduct associés au panier
     $basketProducts = $this->entityManager->getRepository(BasketProduct::class)
@@ -55,11 +57,12 @@ final class BasketController extends AbstractController
 
 
   #[Route('/delete', name: 'delete')]
-  public function delete(): Response
+  public function delete(Security $security): Response
   {
-    $userId = 17;
+    /** @var User $employe */
+    $user = $security->getUser();
 
-    $basket = $this->basketRepository->findOneBy(['user' => $userId]);
+    $basket = $this->basketRepository->findOneBy(['user' => $user]);
 
     $basketProducts = $this->entityManager->getRepository(BasketProduct::class)
       ->findBy(['basket' => $basket]);

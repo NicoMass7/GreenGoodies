@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-0 registration-page">
+  <div class="row g-0 align-items-stretch">
+
+    <div class="col-md-6 p-0 d-flex">
+      <img src="{{ asset('img/conviction.jpg') }}" alt="Inscription"
+        class="img-fluid flex-grow-1 registration-product-img">
+    </div>
+
+    <div class="col-md-6 d-flex justify-content-center p-4">
+      <div class="registration-form-container w-100">
+        <form method="post">
+          <h1 class="registration-h1 mb-3 font-weight-normal">Connexion</h1>
+
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+          {% if error %}
+          <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+          {% endif %}
+
+          <label for="username">Adresse email</label>
+          <input type="email" value="{{ last_username }}" name="mail" id="mail" class="form-control"
+            autocomplete="username" required autofocus>
+
+          <label for="password">Mot de passe</label>
+          <input type="password" name="password" id="password" class="form-control" autocomplete="current-password"
+            required>
+          <button type="submit" class="btn registration-btn btn-dark w-100 mt-3">Se Connecter</button>
+        </form>
+
+        <div class="text-center mt-3">
+          <a href="{{ path('app_register') }}" class="register-inscription">Pas encore de compte ? S'inscrire</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

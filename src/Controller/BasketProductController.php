@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Basket;
 use App\Entity\BasketProduct;
 use App\Repository\BasketRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,11 +22,21 @@ final class BasketProductController extends AbstractController
   ) {}
 
   #[Route('/add/{productId}', name: 'add')]
-  public function index(int $productId): Response
+  public function index(int $productId, Security $security): Response
   {
-    $userId = 17;
+    /** @var User $employe */
+    $user = $security->getUser();
 
-    $basket = $this->basketRepository->findOneBy(['user' => $userId]);
+    $basket = $this->basketRepository->findOneBy(['user' => $user]);
+
+    if (!$basket) {
+      $basket = new Basket();
+      $basket->setUser($user);
+
+      $this->entityManager->persist($basket);
+      $this->entityManager->flush();
+    }
+
     $product = $this->productRepository->find($productId);
 
     // Vérifier si le produit est déjà dans le panier
@@ -39,7 +51,7 @@ final class BasketProductController extends AbstractController
       $basketProduct = new BasketProduct();
       $basketProduct->setBasket($basket);
       $basketProduct->setProduct($product);
-      $basketProduct->setQuantity(1); // Par défaut, ajouter 1
+      $basketProduct->setQuantity(1); // Par défaut, on ajoute 1
 
       $this->entityManager->persist($basketProduct);
     }

@@ -7,6 +7,7 @@ use App\Entity\BasketProduct;
 use App\Repository\OrderRepository;
 use App\Repository\BasketRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,10 +22,12 @@ final class OrderController extends AbstractController
   ) {}
 
   #[Route('/', name: 'show')]
-  public function index(): Response
+  public function index(Security $security): Response
   {
-    $userId = 17;
-    $orders = $this->orderRepository->findBy(['user' => $userId]);
+    /** @var User $employe */
+    $user = $security->getUser();
+
+    $orders = $this->orderRepository->findBy(['user' => $user]);
 
     return $this->render('order/index.html.twig', [
       'ordersList' => $orders,
@@ -32,12 +35,13 @@ final class OrderController extends AbstractController
   }
 
   #[Route('/add', name: 'add')]
-  public function add(): Response
+  public function add(Security $security): Response
   {
-    $userId = 17;
+    /** @var User $employe */
+    $user = $security->getUser();
 
     // Récupérer le panier de l'utilisateur
-    $basket = $this->basketRepository->findOneBy(['user' => $userId]);
+    $basket = $this->basketRepository->findOneBy(['user' => $user]);
 
     if (!$basket) {
       // Si l'utilisateur n'a pas de panier, retour en erreur

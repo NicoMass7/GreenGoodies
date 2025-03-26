@@ -3,34 +3,40 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
-<div class="container-fluid px-0 description-page">
-  <div class="row g-0 align-items-stretch">
+<div class="container-fluid px-0 description-product-page">
+  <div class="row g-0 align-items-stretch d-flex" style="min-height: 80vh;">
+
     <!-- Image (colonne gauche) -->
-    <div class="col-md-6 p-0">
+    <div class="col-md-6 d-flex align-items-stretch">
       <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.image }}"
-        class="img-fluid description-product-img">
+        class="img-fluid w-100 description-product-img">
     </div>
 
     <!-- Texte et bouton (colonne droite) -->
-    <div class="col-md-6 d-flex p-4 h-100">
-      <div class="product-content w-100 d-flex flex-column justify-content-between">
-        <div>
+    <div class="col-md-6 d-flex flex-column justify-content-between">
+      <div class="description-product-content d-flex flex-column flex-grow-1">
+
+        <div class="flex-grow-1">
           <h3>{{ product.name }}</h3>
           <h3>{{ product.price|number_format(2, ',', ' ') }} €</h3>
-          <div class="description-block">
-            <p class="description-title">Description</p>
+          <div class="description-product-block">
+            <p class="description-product-title">Description</p>
             <span>{{ product.longDescription }}</span>
           </div>
         </div>
+        {% if (is_granted('IS_AUTHENTICATED')) %}
 
-        <!-- Bouton centré en bas -->
+        <!-- Bouton aligné au bas du texte mais pas plus bas que l'image -->
         <div class="basket-link text-center mt-auto">
-          <a href="{{ path('app_basket_product_add', {productId: product.id}) }}" class="basket-link">Ajouter au
+          <a href="{{ path('app_basket_product_add', {productId: product.id}) }}"
+            class="btn basket-link btn-dark w-100 mt-3">Ajouter au
             panier</a>
         </div>
+        {% endif %}
+
       </div>
     </div>
+
   </div>
 </div>
-
 {% endblock %}
