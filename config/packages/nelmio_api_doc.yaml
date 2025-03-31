@@ -1,0 +1,12 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: "API GreenGoodies"
+      description: "Documentation interactive de l'API GreenGoodies"
+      version: "1.0.0"
+    servers:
+      - url: "http://localhost:8000"
+        description: "Local Server"
+  areas:
+    path_patterns:
+      - ^/api # Documente uniquement les routes API

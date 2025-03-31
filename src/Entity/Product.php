@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[OA\Schema()]
 class Product
 {
   #[ORM\Id]
@@ -17,15 +20,23 @@ class Product
   private ?int $id = null;
 
   #[ORM\Column(length: 255)]
+  #[OA\Property(type: "string", example: "Céréales bio")]
+  #[Groups(['product:read'])]
   private ?string $name = null;
 
   #[ORM\Column]
+  #[OA\Property(type: "number", format: "float", example: 19.99, description: "Prix du produit")]
+  #[Groups(['product:read'])]
   private ?float $price = null;
 
   #[ORM\Column(length: 255)]
+  #[OA\Property(type: "string", maxLength: 255, example: "Un bol de céréales", description: "Courte description du produit")]
+  #[Groups(['product:read'])]
   private ?string $shortDescription = null;
 
   #[ORM\Column(type: Types::TEXT)]
+  #[OA\Property(type: "string", example: "Ces céréales bio sont fabriquées à partir de flocons d'avoine...", description: "Description détaillée du produit")]
+  #[Groups(['product:read'])]
   private ?string $longDescription = null;
 
   #[ORM\Column(nullable: true)]
@@ -41,6 +52,8 @@ class Product
   private ?int $stock = null;
 
   #[ORM\Column(length: 255)]
+  #[OA\Property(type: "string", example: "https://greengoddies.com/images/céréales.jpg", description: "URL de l'image du produit")]
+  #[Groups(['product:read'])]
   private ?string $image = null;
 
   public function __construct()
