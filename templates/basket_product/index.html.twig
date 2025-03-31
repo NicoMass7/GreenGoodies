@@ -1,20 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BasketProductController!{% endblock %}
+{% block title %}Mon panier{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="cart-page">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+  {% if productsList is empty %}
+  <h1 class="cart-title">Votre panier est vide.</h1>
+  {% else %}
+  <h1 class="cart-title">Mon panier</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Masson/Desktop/Cours Symfony/P2/GreenGoodies/src/Controller/BasketProductController.php</code></li>
-        <li>Your template at <code>C:/Users/Masson/Desktop/Cours Symfony/P2/GreenGoodies/templates/basket_product/index.html.twig</code></li>
-    </ul>
+  <!-- Lien "Vider le panier" correctement positionné -->
+  <a href="{{ path('app_basket_product_delete') }}" class="clear-cart">x Vider le panier</a>
+
+  <div class="cart-container">
+    <div class="cart-items">
+      {% for product in productsList %}
+      <div class="cart-item">
+        <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="cart-image">
+        <div class="cart-details">
+          <h2>{{ product.name }}</h2>
+          <p class="quantity">Quantité : <strong>{{ product.quantity }}</strong></p>
+          <p class="price">{{ product.price|number_format(2, ',', ' ') }}€</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <!-- Bloc séparé pour le résumé -->
+  <div class="cart-summary-container">
+    <div class="cart-summary">
+      <p>Total panier : <strong>{{ totalPrice|number_format(2, ',', ' ') }}€</strong></p>
+      <p class="delivery-info">Frais de livraison : Offert</p>
+    </div>
+  </div>
+
+  <!-- Bouton de validation placé sous tout le bloc blanc -->
+  <a href="{{ path('app_order_add') }}" class=" btn checkout-button btn-dark">Valider la commande</a>
+  {% endif %}
+
 </div>
+
 {% endblock %}

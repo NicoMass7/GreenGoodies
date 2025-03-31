@@ -37,7 +37,7 @@ final class UserController extends AbstractController
     /** @var User $user */
     $user = $security->getUser();
 
-    $basket = $user->getBasket();
+    $basket = $user->getBasketProduct();
     if ($basket) {
       $this->entityManager->remove($basket);
     }

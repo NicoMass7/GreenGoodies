@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\BasketProduct;
 use App\Repository\OrderRepository;
-use App\Repository\BasketRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\BasketProductRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,8 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class OrderController extends AbstractController
 {
   public function __construct(
-    private BasketRepository $basketRepository,
     private OrderRepository $orderRepository,
+    private BasketProductRepository $basketProductRepository,
     private EntityManagerInterface $entityManager,
   ) {}
 
@@ -40,16 +40,14 @@ final class OrderController extends AbstractController
     /** @var User $employe */
     $user = $security->getUser();
 
-    // Récupérer le panier de l'utilisateur
-    $basket = $this->basketRepository->findOneBy(['user' => $user]);
+    // Récupérer tous les produits du panier de l'utilisateur
+    $basketProducts = $this->basketProductRepository->findBy(['user' => $user]);
 
-    if (!$basket) {
+
+    if (!$basketProducts) {
       // Si l'utilisateur n'a pas de panier, retour en erreur
       return $this->render('exception/error404.html.twig');
     }
-
-    $basketProducts = $this->entityManager->getRepository(BasketProduct::class)
-      ->findBy(['basket' => $basket]);
 
     // Calcul du total de la commande
     $totalPrice = 0;
@@ -63,7 +61,7 @@ final class OrderController extends AbstractController
 
     // Créer une nouvelle commande
     $order = new Order();
-    $order->setUser($basket->getUser());
+    $order->setUser($user);
     $order->setOrderNumber($newOrderNumber);
     $order->setValidationDate(new \DateTimeImmutable());
     $order->setTotalPrice($totalPrice);

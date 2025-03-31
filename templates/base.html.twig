@@ -36,7 +36,7 @@
           <li class="nav-item"><a class="nav-link text-dark" href="{{ path('app_product_index') }}">Nos produits</a>
           </li>
           {% if (is_granted('IS_AUTHENTICATED')) %}
-          <li class="nav-item"><a class="nav-link text-dark" href="{{ path('app_basket_show') }}">Mon
+          <li class="nav-item"><a class="nav-link text-dark" href="{{ path('app_basket_product_show') }}">Mon
               panier</a></li>
           <li class="nav-item"><a class="nav-link text-dark" href="{{ path('app_order_show') }}">Mon compte</a></li>
           {% else %}

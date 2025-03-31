@@ -34,8 +34,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column(length: 255)]
   private ?string $password = null;
 
-  #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-  private ?Basket $basket = null;
+  /**
+   * @var Collection<int, BasketProduct>
+   */
+  #[ORM\OneToMany(targetEntity: BasketProduct::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+  private Collection $basketProducts;
 
   /**
    * @var Collection<int, Order>
@@ -124,19 +127,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     return $this;
   }
 
-  public function getBasket(): ?Basket
+  /**
+   * @return Collection<int, BasketProduct>
+   */
+  public function getBasketProduct(): Collection
   {
-    return $this->basket;
+    return $this->basketProducts;
   }
 
-  public function setBasket(Basket $basket): static
+  public function addBasketProduct(BasketProduct $basketProducts): static
   {
     // set the owning side of the relation if necessary
-    if ($basket->getUser() !== $this) {
-      $basket->setUser($this);
+    if (!$this->basketProducts->contains($basketProducts)) {
+      $this->basketProducts->add($basketProducts);
+      $basketProducts->setUser($this);
     }
 
-    $this->basket = $basket;
+    return $this;
+  }
+
+  public function removeBasketProduct(BasketProduct $basketProduct): self
+  {
+    if ($this->basketProducts->removeElement($basketProduct)) {
+      // Assurez-vous que l'association est bien supprimée
+      if ($basketProduct->getUser() === $this) {
+        $basketProduct->setUser(null);
+      }
+    }
 
     return $this;
   }

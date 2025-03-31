@@ -13,9 +13,9 @@ class BasketProduct
   #[ORM\Column]
   private ?int $id = null;
 
-  #[ORM\ManyToOne(inversedBy: 'basketProducts')]
-  #[ORM\JoinColumn(nullable: false)]
-  private ?Basket $basket = null;
+  #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'basketProducts')]
+  #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+  private ?User $user = null;
 
   #[ORM\ManyToOne(inversedBy: 'basketProducts')]
   #[ORM\JoinColumn(nullable: false)]
@@ -29,14 +29,14 @@ class BasketProduct
     return $this->id;
   }
 
-  public function getBasket(): ?Basket
+  public function getUser(): ?User
   {
-    return $this->basket;
+    return $this->user;
   }
 
-  public function setBasket(?Basket $basket): static
+  public function setUser(?User $user): static
   {
-    $this->basket = $basket;
+    $this->user = $user;
 
     return $this;
   }
