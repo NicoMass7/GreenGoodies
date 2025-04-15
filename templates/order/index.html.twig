@@ -40,7 +40,7 @@
     <div class="order-summary">
       <p class="order-api-title"><strong>Mon accès API :</strong></p>
       {% if 'ROLE_API_READ' in roles %}
-      <a href="{{ path('app_user_removeApiRights')}}" class="btn order-button btn-dark">Révoquer mon accès API</a>
+      <a href="{{ path('app_user_removeApiRights')}}" class="btn order-button btn-dark">Désactiver mon accès API</a>
       {% else %}
       <a href="{{ path('app_user_addApiRights')}}" class="btn order-button btn-dark">Activer mon accès API</a>
       {% endif %}

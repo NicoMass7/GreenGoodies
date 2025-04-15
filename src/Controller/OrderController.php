@@ -21,60 +21,66 @@ final class OrderController extends AbstractController
     private EntityManagerInterface $entityManager,
   ) {}
 
+  // Route pour afficher les commandes de l'utilisateur connecté
   #[Route('/', name: 'show')]
   public function index(Security $security): Response
   {
     /** @var User $employe */
-    $user = $security->getUser();
+    $user = $security->getUser(); // Récupère l'utilisateur connecté
 
+    // Récupère toutes les commandes associées à cet utilisateur
     $orders = $this->orderRepository->findBy(['user' => $user]);
 
+    // Affiche la page listant les commandes
     return $this->render('order/index.html.twig', [
       'ordersList' => $orders,
     ]);
   }
 
+  // Route permettant de créer une nouvelle commande à partir du panier de l'utilisateur
   #[Route('/add', name: 'add')]
   public function add(Security $security): Response
   {
     /** @var User $employe */
-    $user = $security->getUser();
+    $user = $security->getUser(); // Récupère l'utilisateur connecté
 
-    // Récupérer tous les produits du panier de l'utilisateur
+    // Récupère tous les produits actuellement dans le panier de l'utilisateur
     $basketProducts = $this->basketProductRepository->findBy(['user' => $user]);
 
-
+    // Si aucun produit dans le panier, retourne une page d'erreur
     if (!$basketProducts) {
-      // Si l'utilisateur n'a pas de panier, retour en erreur
       return $this->render('exception/error404.html.twig');
     }
 
-    // Calcul du total de la commande
+    // Calcule le prix total de la commande en multipliant prix x quantité pour chaque produit
     $totalPrice = 0;
     foreach ($basketProducts as $basketProduct) {
       $totalPrice += $basketProduct->getProduct()->getPrice() * $basketProduct->getQuantity();
     }
 
-    // Trouver le dernier numéro de commande et incrémenter
+    // Récupère le dernier numéro de commande existant et incrémente pour en créer un nouveau
     $lastOrder = $this->orderRepository->findOneBy([], ['orderNumber' => 'DESC']);
     $newOrderNumber = $lastOrder ? $lastOrder->getOrderNumber() + 1 : 1;
 
-    // Créer une nouvelle commande
+    // Création et configuration d’un nouvel objet Order
     $order = new Order();
     $order->setUser($user);
     $order->setOrderNumber($newOrderNumber);
-    $order->setValidationDate(new \DateTimeImmutable());
+    $order->setValidationDate(new \DateTimeImmutable()); // Date actuelle
     $order->setTotalPrice($totalPrice);
 
+    // Enregistre la commande dans la base de données
     $this->entityManager->persist($order);
 
-    // Supprimer tous les produits du panier
+    // Supprimer tous les produits du panier, car ils ont été commandés
     foreach ($basketProducts as $basketProduct) {
       $this->entityManager->remove($basketProduct);
     }
 
+    // Valide les changements (sauvegarde)
     $this->entityManager->flush();
 
+    // Redirige vers la page d'accueil des produits après la commande
     return $this->redirectToRoute('app_product_index');
   }
 }

@@ -4,6 +4,14 @@ nelmio_api_doc:
       title: "API GreenGoodies"
       description: "Documentation interactive de l'API GreenGoodies"
       version: "1.0.0"
+    components:
+      securitySchemes:
+        BearerAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+    security:
+      - BearerAuth: []
     servers:
       - url: "http://localhost:8000"
         description: "Local Server"

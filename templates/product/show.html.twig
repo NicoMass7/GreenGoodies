@@ -24,13 +24,17 @@
             <span>{{ product.longDescription }}</span>
           </div>
         </div>
-        {% if (is_granted('IS_AUTHENTICATED')) %}
 
+        {% if (is_granted('IS_AUTHENTICATED')) %}
         <!-- Bouton aligné au bas du texte mais pas plus bas que l'image -->
         <div class="basket-link text-center mt-auto">
           <a href="{{ path('app_basket_product_add', {productId: product.id}) }}"
             class="btn basket-link btn-dark w-100 mt-3">Ajouter au
             panier</a>
+        </div>
+        {% else %}
+        <div class="basket-link text-center mt-auto">
+          <a href="{{ path('app_login') }}" class="btn basket-link btn-dark w-100 mt-3">Connexion</a>
         </div>
         {% endif %}
 

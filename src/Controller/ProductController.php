@@ -16,26 +16,32 @@ final class ProductController extends AbstractController
     private EntityManagerInterface $entityManager,
   ) {}
 
+  // Route principale du site, affichant la liste des produits
   #[Route('/', name: 'index')]
   public function index(): Response
   {
+    // Récupère tous les produits depuis le repository
     $products = $this->productRepository->findALL();
 
+    // Affiche la vue avec la liste des produits
     return $this->render('product/index.html.twig', [
       'products' => $products,
     ]);
   }
 
+  // Route qui affiche le détail d’un produit en fonction de son identifiant
   #[Route('/show/{id}', name: 'show')]
   public function showProduct(int $id): Response
   {
+    // Récupère le produit avec l’ID donné
     $product = $this->productRepository->find($id);
 
+    // Si aucun produit n’est trouvé, on affiche une page d’erreur personnalisée
     if (!$product) {
-      // Si le produit n'existe pas, retour en erreur
       return $this->render('exception/error404.html.twig');
     }
 
+    // Sinon, on affiche la page de détails du produit
     return $this->render('product/show.html.twig', [
       'product' => $product,
     ]);
