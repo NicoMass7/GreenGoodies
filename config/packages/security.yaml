@@ -52,6 +52,8 @@ security:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
     - { path: ^/api/products, roles: ROLE_API_READ }
     - { path: ^/api/doc, roles: ROLE_API_READ }
+    - { path: "^/order", roles: IS_AUTHENTICATED_FULLY }
+
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
 

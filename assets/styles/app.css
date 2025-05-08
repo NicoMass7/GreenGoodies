@@ -11,6 +11,13 @@
   padding: 1.5rem;
 }
 
+/******************/
+/* ERROR 404 */
+/*****************/
+.error404 {
+  padding-top: 3rem;
+}
+
 .btn:hover {
   background-color: #222;
 }
@@ -56,6 +63,7 @@
 .footer-img {
   height: 800px;
   width: 100%;
+  object-fit: cover;
 }
 
 body {
@@ -343,6 +351,7 @@ body {
 @media (max-width: 768px) {
   .registration-product-img {
     max-height: 40vh;
+    object-fit: cover;
   }
 }
 

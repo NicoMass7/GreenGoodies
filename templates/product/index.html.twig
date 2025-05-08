@@ -33,7 +33,7 @@
     {% for product in products %}
     <div class="col-12 col-md-6 col-lg-4 text-center">
       <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.image }}"
-        class="img-fluid product-img">
+        class="img-fluid product-img" loading="lazy">
       <div class="product-info">
         <strong>{{ product.name }}</strong>
         <p>{{ product.shortDescription }}</p>

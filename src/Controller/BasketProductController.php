@@ -7,6 +7,7 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BasketProductRepository;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,37 +60,42 @@ final class BasketProductController extends AbstractController
     ]);
   }
 
-  // Route pour ajouter un produit au panier
-  #[Route('/add/{productId}', name: 'add')]
-  public function add(int $productId, Security $security): Response
+  #[Route('/add/{productId}', name: 'add', methods: ['POST'])]
+  public function addProductQuantity(int $productId, Security $security): Response
   {
     /** @var User $employe */
-    $user = $security->getUser(); // Récupère l'utilisateur connecté
+    $user = $security->getUser();
 
-    // Récupère le produit correspondant à l'ID
     $product = $this->productRepository->find($productId);
+    if (!$product) {
+      throw $this->createNotFoundException('Produit introuvable.');
+    }
 
-    // Vérifie si ce produit est déjà dans le panier
     $basketProduct = $this->basketProductRepository->findOneBy(['user' => $user, 'product' => $product]);
 
+    $quantity = 0;
+    if ($_POST['quantity'] != 0) {
+      $quantity = $_POST['quantity'];
+    }
+
     if ($basketProduct) {
-      // Si déjà présent, augmente la quantité de 1
-      $basketProduct->setQuantity($basketProduct->getQuantity() + 1);
+      $basketProduct->setQuantity($quantity);
     } else {
-      // Sinon, crée une nouvelle entrée panier pour ce produit
       $basketProduct = new BasketProduct();
       $basketProduct->setUser($user);
       $basketProduct->setProduct($product);
       $basketProduct->setQuantity(1);
-
       $this->entityManager->persist($basketProduct);
     }
 
-    // Enregistre les modifications
+    if ($quantity == 0) {
+      // Si quantité à 0, on retire du panier
+      $this->entityManager->remove($basketProduct);
+    }
+
     $this->entityManager->flush();
 
-    // Redirige vers la page de détails du produit
-    return $this->redirect($this->generateUrl('app_product_show', ['id' => $productId]));
+    return $this->redirectToRoute('app_product_show', ['id' => $productId]);
   }
 
   // Route pour supprimer tous les produits du panier

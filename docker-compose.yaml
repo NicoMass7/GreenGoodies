@@ -1,0 +1,54 @@
+services:
+  database:
+    image: mariadb:11.5.2
+    ports:
+      - "3307:3306"
+    environment:
+      MARIADB_USER: root
+      MARIADB_ROOT_PASSWORD: passwordBDD
+      MARIADB_DATABASE: greengoodies
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'no'
+    volumes:
+      - database_data:/var/lib/mysql:rw
+      - ./var/mysql:/var/www/var
+
+  php:
+    build: ./assets/docker/php
+    volumes:
+      - .:/var/www:delegated
+    depends_on:
+      - database
+
+###> Pour la mise en production
+  nginx:
+    build: ./assets/docker/nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./assets/public:/var/www/public:delegated
+    depends_on:
+      - php
+
+###> Permet de voir ce qu'il y a en bdd et permet de débuguer
+  adminer:
+    image: adminer:latest
+    depends_on:
+      - database
+    environment:
+      APP_ENV: dev
+      ADMINER_DESIGN: pepa-linha
+      ADMINER_DEFAULT_SERVER:
+    ports:
+      - "8082:8000"
+
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  database_data:

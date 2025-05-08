@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 // Route de base pour toutes les routes de ce contrôleur : /api/products
@@ -44,6 +43,7 @@ class ApiProductController extends AbstractController
     $json = $serializer->serialize($products, 'json', ['groups' => 'product:read']);
 
     // Retourne la réponse JSON avec le code 200 (OK)
-    return new JsonResponse($json, Response::HTTP_OK, [], true);
+    // return new JsonResponse($json, Response::HTTP_OK, [], true);
+    return new JsonResponse($json, json: true);
   }
 }

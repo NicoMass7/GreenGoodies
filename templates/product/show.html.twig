@@ -25,16 +25,21 @@
           </div>
         </div>
 
-        {% if (is_granted('IS_AUTHENTICATED')) %}
-        <!-- Bouton aligné au bas du texte mais pas plus bas que l'image -->
+        {% if is_granted('IS_AUTHENTICATED') %}
         <div class="basket-link text-center mt-auto">
-          <a href="{{ path('app_basket_product_add', {productId: product.id}) }}"
-            class="btn basket-link btn-dark w-100 mt-3">Ajouter au
-            panier</a>
+          <form method="post" action="{{ path('app_basket_product_add', { productId: product.id }) }}">
+            <div class="mb-3">
+              <label for="quantity" class="form-label">Quantité</label>
+              <input type="number" class="form-control" name="quantity" id="quantity" min="0" value="{{ quantity }}">
+            </div>
+            <button type="submit" class="btn btn-dark w-100 mt-3">
+              {{ isInBasket ? 'Mettre à jour' : 'Ajouter au panier' }}
+            </button>
+          </form>
         </div>
         {% else %}
         <div class="basket-link text-center mt-auto">
-          <a href="{{ path('app_login') }}" class="btn basket-link btn-dark w-100 mt-3">Connexion</a>
+          <a href="{{ path('app_login') }}" class="btn btn-dark w-100 mt-3">Connexion</a>
         </div>
         {% endif %}
 

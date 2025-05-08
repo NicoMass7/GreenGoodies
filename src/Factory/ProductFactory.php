@@ -33,12 +33,34 @@ final class ProductFactory extends PersistentProxyObjectFactory
    */
   protected function defaults(): array|callable
   {
+    $faker = self::faker();
+
+    $plats = [
+      [
+        'court' => 'Un plat réconfortant aux saveurs provençales.',
+        'long' => 'Ce plat mijoté associe tomates confites, aubergines fondantes et herbes de Provence, 
+                       pour une expérience gustative authentique et généreuse.'
+      ],
+      [
+        'court' => 'Un curry doux et parfumé pour les amateurs d’épices.',
+        'long' => 'Ce curry végétalien est préparé avec du lait de coco, des pois chiches, et des légumes colorés. 
+                       Parfait pour un déjeuner exotique et équilibré.'
+      ],
+      [
+        'court' => 'Un risotto crémeux à savourer sans modération.',
+        'long' => 'Ce risotto aux champignons, relevé d’une touche de parmesan et de vin blanc, 
+                       est un classique de la cuisine italienne revisité avec passion.'
+      ],
+    ];
+
+    $plat = $faker->randomElement($plats);
+
     return [
       'image' => self::getRandomImage(),
-      'longDescription' => self::faker()->text(),
       'name' => self::faker()->text(20),
       'price' => self::faker()->randomFloat(2, 1, 100),
-      'shortDescription' => self::faker()->text(50),
+      'shortDescription' => $plat['court'],
+      'longDescription' => $plat['long'],
     ];
   }
 

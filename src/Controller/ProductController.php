@@ -4,16 +4,19 @@ namespace App\Controller;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\BasketProductRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/product', name: 'app_product_')]
+#[Route('/', name: 'app_product_')]
 final class ProductController extends AbstractController
 {
   public function __construct(
     private ProductRepository $productRepository,
     private EntityManagerInterface $entityManager,
+    private BasketProductRepository $basketProductRepository,
   ) {}
 
   // Route principale du site, affichant la liste des produits
@@ -30,24 +33,39 @@ final class ProductController extends AbstractController
   }
 
   // Route qui affiche le détail d’un produit en fonction de son identifiant
-  #[Route('/show/{id}', name: 'show')]
-  public function showProduct(int $id): Response
+  #[Route('/show_product/{id}', name: 'show')]
+  public function showProduct(int $id, Security $security): Response
   {
-    // Récupère le produit avec l’ID donné
     $product = $this->productRepository->find($id);
-
-    // Si aucun produit n’est trouvé, on affiche une page d’erreur personnalisée
     if (!$product) {
       return $this->render('exception/error404.html.twig');
     }
 
-    // Sinon, on affiche la page de détails du produit
+    $basketProduct = null;
+    $quantity = 1;
+    $isInBasket = false;
+
+    if ($security->getUser()) {
+      $user = $security->getUser();
+      $basketProduct = $this->basketProductRepository->findOneBy([
+        'user' => $user,
+        'product' => $product,
+      ]);
+
+      if ($basketProduct) {
+        $quantity = $basketProduct->getQuantity();
+        $isInBasket = true;
+      }
+    }
+
     return $this->render('product/show.html.twig', [
       'product' => $product,
+      'quantity' => $quantity,
+      'isInBasket' => $isInBasket
     ]);
   }
 
-  #[Route('/add', name: 'add')]
+  #[Route('/add_product', name: 'add')]
   public function addProduct(): Response
   {
     return $this->render('product/add.html.twig', [
