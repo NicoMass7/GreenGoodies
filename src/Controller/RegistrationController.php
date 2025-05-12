@@ -10,13 +10,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use App\Security\AppAuthenticator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
   // Route qui gère l'inscription d’un nouvel utilisateur
   #[Route('/register', name: 'app_register')]
-  public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+  public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator): Response
   {
     // Création d'une nouvelle instance de l'entité User
     $user = new User();
@@ -30,7 +32,7 @@ class RegistrationController extends AbstractController
     // Vérifie si le formulaire a été soumis et est valide
     if ($form->isSubmitted() && $form->isValid()) {
       /** @var string $plainPassword */
-      $plainPassword = $form->get('plainPassword')->getData();  // Récupération du mot de passe saisi en clair
+      $plainPassword = $form->get('password')->getData();  // Récupération du mot de passe saisi en clair
 
       // Enregistre la date de création de l'utilisateur
       $user->setCreationDate(new \DateTimeImmutable());
@@ -41,6 +43,13 @@ class RegistrationController extends AbstractController
       // Persistance et sauvegarde de l'utilisateur dans la base de données
       $entityManager->persist($user);
       $entityManager->flush();
+
+      // Connecte automatiquement l'utilisateur une fois l'inscription validée
+      return $userAuthenticator->authenticateUser(
+        $user,
+        $authenticator,
+        $request
+      );
 
       // Redirection vers la liste des produits après inscription réussie
       return $this->redirectToRoute('app_product_index');

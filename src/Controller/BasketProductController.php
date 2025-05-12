@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\BasketProduct;
+use App\Entity\User;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BasketProductRepository;
@@ -25,7 +26,7 @@ final class BasketProductController extends AbstractController
   #[Route('/', name: 'show')]
   public function index(Security $security): Response
   {
-    /** @var User $employe */
+    /** @var User $user */
     $user = $security->getUser(); // Récupère l'utilisateur connecté
 
     // Récupère tous les objets BasketProduct (produits dans le panier) associés à cet utilisateur
@@ -63,7 +64,7 @@ final class BasketProductController extends AbstractController
   #[Route('/add/{productId}', name: 'add', methods: ['POST'])]
   public function addProductQuantity(int $productId, Security $security): Response
   {
-    /** @var User $employe */
+    /** @var User $user */
     $user = $security->getUser();
 
     $product = $this->productRepository->find($productId);
@@ -104,7 +105,7 @@ final class BasketProductController extends AbstractController
   {
     $productsList = [];
 
-    /** @var User $employe */
+    /** @var User $user */
     $user = $security->getUser(); // Récupère l'utilisateur connecté
 
     // Récupère tous les produits dans le panier de l'utilisateur

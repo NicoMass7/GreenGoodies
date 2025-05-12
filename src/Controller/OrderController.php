@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Order;
-use App\Entity\BasketProduct;
+use App\Entity\User;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BasketProductRepository;
@@ -25,7 +25,7 @@ final class OrderController extends AbstractController
   #[Route('/', name: 'show')]
   public function index(Security $security): Response
   {
-    /** @var User $employe */
+    /** @var User $user */
     $user = $security->getUser(); // Récupère l'utilisateur connecté
 
     // Récupère toutes les commandes associées à cet utilisateur
@@ -41,7 +41,7 @@ final class OrderController extends AbstractController
   #[Route('/add', name: 'add')]
   public function add(Security $security): Response
   {
-    /** @var User $employe */
+    /** @var User $user */
     $user = $security->getUser(); // Récupère l'utilisateur connecté
 
     // Récupère tous les produits actuellement dans le panier de l'utilisateur
